@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MoutsWebSemEF.Data;
 using MoutsWebSemEF.Models;
+using MoutsWebSemEF.Services;
 
 namespace MoutsWebSemEF.Pages.Vendas
 {
@@ -10,7 +11,7 @@ namespace MoutsWebSemEF.Pages.Vendas
         [BindProperty]
         public Venda Venda { get; set; }
 
-        RepositorioVenda _repo = new RepositorioVenda();
+        private readonly VendaService _service = new VendaService();
 
         public void OnGet()
         {
@@ -29,7 +30,7 @@ namespace MoutsWebSemEF.Pages.Vendas
         {
             Venda.ValorTotal = 0;
 
-            _repo.Save(Venda);
+            _service.Save(Venda);
             return RedirectToPage("Index");
         }
     }

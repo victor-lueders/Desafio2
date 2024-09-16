@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MoutsWebSemEF.Data;
 using MoutsWebSemEF.Models;
+using MoutsWebSemEF.Services;
 
 namespace MoutsWebSemEF.Pages.Vendas
 {
@@ -13,18 +14,18 @@ namespace MoutsWebSemEF.Pages.Vendas
         [BindProperty]
         public List<ListItem> Itens { get; set; }
 
-        RepositorioVenda _repo = new RepositorioVenda();
+        private readonly VendaService _service = new VendaService();
         private List<ProdutoVenda> produtos;
         public void OnGet(int id)
         {
             Id = id;
             Itens = new List<ListItem>();
-            produtos = _repo.ObterProdutos(Id);
+            produtos = _service.ObterProdutos(Id);
 
             
             foreach (var produto in produtos)
             {
-                var item = _repo.GetProduto(produto.ProdutoId);
+                var item = _service.GetProduto(produto.ProdutoId);
 
                 Itens.Add(new ListItem { Id = produto.Id, Descricao = item.Descricao, Quantidade = produto.Quantidade });
             }

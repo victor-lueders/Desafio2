@@ -1,18 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MoutsWebSemEF.Data;
 using MoutsWebSemEF.Models;
 using MoutsWebSemEF.Services;
 
-namespace MoutsWebSemEF.Pages
+namespace MoutsWebSemEF.Pages.Vendas
 {
-    public class IndexModel : PageModel
+    public class DetailsModel : PageModel
     {
+        [BindProperty]
+        public Venda Venda { get; set; }
+
         private readonly VendaService _service = new VendaService();
-        public List<Venda> Vendas;
-        public void OnGet()
+
+        public void OnGet(int id)
         {
-            Vendas = _service.GetAll();
+           Venda = _service.Get(id);
         }
     }
 }

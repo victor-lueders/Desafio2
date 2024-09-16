@@ -6,11 +6,7 @@ namespace MoutsWebSemEF.Services
 {
     public class VendaService
     {
-        RepositorioVenda _repo;
-        public VendaService(RepositorioVenda repo)
-        {
-            _repo = repo;
-        }
+        RepositorioVenda _repo = new RepositorioVenda();
         public Venda Save(Venda v)
         {
             if (v.ValorTotal < 0)
@@ -83,6 +79,22 @@ namespace MoutsWebSemEF.Services
             }
             
             return _repo.ObterProdutos(compraId);
+        }
+        public void SaveProduto(int produtoId, int quantidade, int vendaId)
+        {
+            if (vendaId < 0)
+            {
+                throw new Exception("Id da compra Invalido");
+            }
+            if (produtoId < 0)
+            {
+                throw new Exception("Id do produto Invalido");
+            }
+            if (quantidade < 0)
+            {
+                throw new Exception("Quantidade inválida");
+            }
+            _repo.SaveProduto(produtoId, quantidade, vendaId);
         }
     }
 }

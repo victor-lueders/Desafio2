@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MoutsWebSemEF.Data;
+using MoutsWebSemEF.Services;
 
 namespace MoutsWebSemEF.Pages.Vendas
 {
@@ -13,7 +14,7 @@ namespace MoutsWebSemEF.Pages.Vendas
         [BindProperty]
         public int Quantidade { get; set; }
 
-        RepositorioVenda _repo = new RepositorioVenda();
+        private readonly VendaService _service = new VendaService();
 
         public void OnGet(int id)
         {
@@ -30,7 +31,7 @@ namespace MoutsWebSemEF.Pages.Vendas
 
         public IActionResult Add()
         {
-            _repo.SaveProduto(ProdutoId, Quantidade, Id);
+            _service.SaveProduto(ProdutoId, Quantidade, Id);
 
             return RedirectToPage("./Vendas/ListItems");
         }

@@ -31,30 +31,37 @@ namespace MoutsWebSemEF.Data
 
         public Venda Get(int id)
         {
-            var selectQuery = "SELECT * FROM Venda WHERE Id = @Id";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand(selectQuery, connection))
+            try
             {
-                command.Parameters.AddWithValue("@Id", id);
+                var selectQuery = "SELECT * FROM Venda WHERE Id = @Id";
 
-                connection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlCommand command = new SqlCommand(selectQuery, connection))
                 {
-                    if (reader.Read())
+                    command.Parameters.AddWithValue("@Id", id);
+
+                    connection.Open();
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        venda = new Venda
+                        if (reader.Read())
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            ClienteId = reader.GetInt32(reader.GetOrdinal("ClienteId")),
-                            ValorTotal = reader.GetDouble(reader.GetOrdinal("ValorTotal")),
-                            Pagamento = reader.GetString(reader.GetOrdinal("Pagamento"))
-                        };
+                            venda = new Venda
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                ClienteId = reader.GetInt32(reader.GetOrdinal("ClienteId")),
+                                ValorTotal = reader.GetDouble(reader.GetOrdinal("ValorTotal")),
+                                Pagamento = reader.GetString(reader.GetOrdinal("Pagamento"))
+                            };
+                        }
                     }
                 }
-            }
 
-            return venda;
+                return venda;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public List<Venda> GetAll()
@@ -93,94 +100,125 @@ namespace MoutsWebSemEF.Data
 
         public Venda Save(Venda entity)
         {
-            /*entity.Id = VendaList.Count + 1;
-            VendaList.Add(entity);*/
-            var insertQuery = "INSERT INTO Venda (ClienteId, Pagamento, ValorTotal) VALUES (@ClienteId, @Pagamento, @ValorTotal); " +
-                "SELECT SCOPE_IDENTITY();";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+            try
             {
-                cmd.Parameters.AddWithValue("@ClienteId", entity.ClienteId);
-                cmd.Parameters.AddWithValue("@Pagamento", entity.Pagamento);
-                cmd.Parameters.AddWithValue("@ValorTotal", entity.ValorTotal);
 
-                conn.Open();
-                entity.Id = Convert.ToInt32(cmd.ExecuteScalar());
+                /*entity.Id = VendaList.Count + 1;
+                VendaList.Add(entity);*/
+                var insertQuery = "INSERT INTO Venda (ClienteId, Pagamento, ValorTotal) VALUES (@ClienteId, @Pagamento, @ValorTotal); " +
+                    "SELECT SCOPE_IDENTITY();";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ClienteId", entity.ClienteId);
+                    cmd.Parameters.AddWithValue("@Pagamento", entity.Pagamento);
+                    cmd.Parameters.AddWithValue("@ValorTotal", entity.ValorTotal);
+
+                    conn.Open();
+                    entity.Id = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+
+                return entity;
             }
-
-            return entity;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool Update(Venda entity)
         {
-            var updateQuery = "UPDATE Venda SET Pagamento = @Pagamento, ValorTotal = @ValorTotal WHERE Id = @Id";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+            try
             {
-                cmd.Parameters.AddWithValue("@Pagamento", entity.Pagamento);
-                cmd.Parameters.AddWithValue("@ValorTotal", entity.ValorTotal);
-                cmd.Parameters.AddWithValue("@Id", entity.Id);
+                var updateQuery = "UPDATE Venda SET Pagamento = @Pagamento, ValorTotal = @ValorTotal WHERE Id = @Id";
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                return true;
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Pagamento", entity.Pagamento);
+                    cmd.Parameters.AddWithValue("@ValorTotal", entity.ValorTotal);
+                    cmd.Parameters.AddWithValue("@Id", entity.Id);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
 
-            return false;
         }
 
         public List<ProdutoVenda> ObterProdutos(int compraId)
         {
-            var produtos = new List<ProdutoVenda>();
-            var select = "SELECT * FROM ProdutoVenda WHERE VendaId = " + compraId;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(select, conn))
+            try
             {
+                var produtos = new List<ProdutoVenda>();
+                var select = "SELECT * FROM ProdutoVenda WHERE VendaId = " + compraId;
 
-                conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(select, conn))
                 {
-                    while (reader.Read())
+
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        produtos.Add(new ProdutoVenda()
+                        while (reader.Read())
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            ProdutoId = reader.GetInt32(reader.GetOrdinal("ProdutoId")),
-                            Quantidade = reader.GetInt32(reader.GetOrdinal("Quantidade")),
-                        });
+                            produtos.Add(new ProdutoVenda()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                ProdutoId = reader.GetInt32(reader.GetOrdinal("ProdutoId")),
+                                Quantidade = reader.GetInt32(reader.GetOrdinal("Quantidade")),
+                            });
+                        }
                     }
                 }
-            }
 
-            return produtos;
+                return produtos;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public Produto GetProduto(int id)
         {
-            var select = "SELECT * FROM Produto WHERE Id = " + id;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(select, conn))
+            try
             {
+                var select = "SELECT * FROM Produto WHERE Id = " + id;
 
-                conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(select, conn))
                 {
-                    if (reader.Read())
+
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        return new Produto
+                        if (reader.Read())
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Descricao = reader.GetString(reader.GetOrdinal("Descricao"))
-                        };
+                            return new Produto
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Descricao = reader.GetString(reader.GetOrdinal("Descricao")),
+                                Valor = reader.GetDouble(reader.GetOrdinal("Valor"))
+                            };
+                        }
                     }
                 }
-            }
 
-            return new Produto();
+                return new Produto();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool SaveProduto(int produtoId, int quantidade, int vendaId)
@@ -199,13 +237,24 @@ namespace MoutsWebSemEF.Data
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
-
+                CalcularValor(vendaId, produtoId, quantidade);
                 return true;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public void CalcularValor(int vendaId, int produtoId, int quantidade)
+        {
+            var produto = GetProduto(produtoId);
+            var valor = produto.Valor * quantidade;
+
+            var venda = Get(vendaId);
+            venda.ValorTotal += valor;
+
+            Update(venda);
         }
     }
 }
