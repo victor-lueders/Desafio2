@@ -13,10 +13,5 @@ namespace MoutsWebSemEF.Pages
         {
             Vendas = _repositorio.GetAll();
         }
-
-        public void ListClick(object sender, EventArgs e)
-        {
-
-        }
     }
 }

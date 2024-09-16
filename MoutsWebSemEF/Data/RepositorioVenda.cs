@@ -182,5 +182,30 @@ namespace MoutsWebSemEF.Data
 
             return new Produto();
         }
+
+        public bool SaveProduto(int produtoId, int quantidade, int vendaId)
+        {
+            try
+            {
+                var insertQuery = "INSERT INTO ProdutoVenda (ProdutoId, VendaId, Quantidade) VALUES (@ProdutoId, @VendaId, @Quantidade);";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ProdutoId", produtoId);
+                    cmd.Parameters.AddWithValue("@VendaId", vendaId);
+                    cmd.Parameters.AddWithValue("@Quantidade", quantidade);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
