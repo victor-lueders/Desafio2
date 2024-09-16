@@ -2,9 +2,10 @@
 {
     public class Pessoa
     {
-        public string Nome { get; set; }
+        public string Name { get; set; }
         public string Endereco { get; set; }
-        public string Telefone { get; set; }
+        public string Fone { get; set; }
+        public string Email { get; set; }
         private string Cpf;
 
         public string cpf
@@ -28,12 +29,13 @@
 
         }
 
-        public Pessoa(string nome, string endereco, string telefone, string cpf)
+        public Pessoa(string name, string endereco, string fone, string cpf, string email)
         {
-            this.Nome = nome;
+            this.Name = name;
             this.Endereco = endereco;
-            this.Telefone = telefone;
+            this.Fone = fone;
             this.Cpf = cpf;
+            this.Email = email;
         }
     }
 }

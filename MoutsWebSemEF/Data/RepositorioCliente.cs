@@ -44,9 +44,9 @@ namespace MoutsWebSemEF.Data
                         cliente = new Cliente
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Nome = reader.GetString(reader.GetOrdinal("Nome")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
                             cpf = reader.GetString(reader.GetOrdinal("Cpf")),
-                            Telefone = reader.GetString(reader.GetOrdinal("Telefone")),
+                            Fone = reader.GetString(reader.GetOrdinal("Fone")),
                             Endereco = reader.GetString(reader.GetOrdinal("Endereco")),
                             Pontuacao = reader.GetInt32(reader.GetOrdinal("Pontuacao"))
                         };
@@ -75,9 +75,9 @@ namespace MoutsWebSemEF.Data
                             clienteList.Add(new Cliente
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                Nome = reader.GetString(reader.GetOrdinal("Name")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
                                 cpf = reader.GetString(reader.GetOrdinal("Cpf")),
-                                Telefone = reader.GetString(reader.GetOrdinal("Fone")),
+                                Fone = reader.GetString(reader.GetOrdinal("Fone")),
                                 Endereco = reader.GetString(reader.GetOrdinal("Endereco")),
                                 Pontuacao = reader.GetInt32(reader.GetOrdinal("Pontuacao"))
                             });
@@ -97,15 +97,15 @@ namespace MoutsWebSemEF.Data
         {
             /*entity.Id = ClienteList.Count + 1;
             ClienteList.Add(entity);*/
-            var insertQuery = "INSERT INTO Cliente (Nome, Cpf, Telefone, Endereco, Pontuacao) VALUES (@Nome, @Cpf, @Telefone, @Endereco, @Pontuacao); " +
+            var insertQuery = "INSERT INTO Cliente (Name, Cpf, Fone, Endereco, Pontuacao) VALUES (@Name, @Cpf, @Fone, @Endereco, @Pontuacao); " +
                 "SELECT SCOPE_IDENTITY();";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
             {
-                cmd.Parameters.AddWithValue("@Nome", entity.Nome);
+                cmd.Parameters.AddWithValue("@Name", entity.Name);
                 cmd.Parameters.AddWithValue("@Cpf", entity.cpf);
-                cmd.Parameters.AddWithValue("@Telefone", entity.Telefone);
+                cmd.Parameters.AddWithValue("@Fone", entity.Fone);
                 cmd.Parameters.AddWithValue("@Endereco", entity.Endereco);
                 cmd.Parameters.AddWithValue("@Pontuacao", entity.Pontuacao);
 
@@ -118,14 +118,14 @@ namespace MoutsWebSemEF.Data
 
         public bool Update(Cliente entity)
         {
-            var updateQuery = "UPDATE Cliente SET Nome = @Nome, Cpf = @cpf, Telefone = @Telefone, Endereco = @Endereco, Pontuacao = @Pontuacao WHERE Id = @Id";
+            var updateQuery = "UPDATE Cliente SET Name = @Name, Cpf = @cpf, Fone = @Fone, Endereco = @Endereco, Pontuacao = @Pontuacao WHERE Id = @Id";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(updateQuery, conn))
             {
-                cmd.Parameters.AddWithValue("@Nome", entity.Nome);
+                cmd.Parameters.AddWithValue("@Name", entity.Name);
                 cmd.Parameters.AddWithValue("@Cpf", entity.cpf);
-                cmd.Parameters.AddWithValue("@Telefone", entity.Telefone);
+                cmd.Parameters.AddWithValue("@Fone", entity.Fone);
                 cmd.Parameters.AddWithValue("@Endereco", entity.Endereco);
                 cmd.Parameters.AddWithValue("@Pontuacao", entity.Pontuacao);
                 cmd.Parameters.AddWithValue("@Id", entity.Id);
