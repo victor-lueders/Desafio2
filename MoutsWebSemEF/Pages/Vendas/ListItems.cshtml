@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id}"
 @model MoutsWebSemEF.Pages.Vendas.ListItemsModel
 @{
 }
@@ -6,7 +6,7 @@
 <h1>Itens</h1>
 
 <p>
-    <a asp-page="Create">Nova venda</a>
+    <a asp-page="AddItem" asp-route-id="@Model.Id">Adicionar item</a>
 </p>
 <table class="table">
     <thead>
@@ -31,9 +31,6 @@
                     @Html.DisplayFor(modelItem => item.Quantidade)
                 </td>
                 <td>
-                    <a asp-page="./Vendas/ListItems" asp-route-id="@item.Id">Ver itens</a>
-                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
-                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
                     <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>

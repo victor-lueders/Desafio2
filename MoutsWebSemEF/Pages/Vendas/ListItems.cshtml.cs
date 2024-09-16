@@ -10,12 +10,17 @@ namespace MoutsWebSemEF.Pages.Vendas
         [BindProperty]
         public int Id { get; set; }
 
+        [BindProperty]
+        public List<ListItem> Itens { get; set; }
+
         RepositorioVenda _repo = new RepositorioVenda();
-        public List<ListItem> Itens;
         private List<ProdutoVenda> produtos;
-        public void OnGet()
+        public void OnGet(int id)
         {
+            Id = id;
+            Itens = new List<ListItem>();
             produtos = _repo.ObterProdutos(Id);
+
             
             foreach (var produto in produtos)
             {
