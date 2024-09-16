@@ -1,0 +1,54 @@
+﻿@page
+@model MoutsWebSemEF.Pages.IndexModel
+@{
+}
+
+<h1>Vendas</h1>
+
+<p>
+    <a asp-page="Create">Nova venda</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Vendas[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vendas[0].ClienteId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vendas[0].ValorTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vendas[0].Pagamento)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Vendas)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClienteId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pagamento)
+                </td>
+                <td>
+                    <a asp-page="./Vendas/ListItems" asp-route-id="@item.Id" onclick="ListClick()">Ver itens</a>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> 
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> 
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
